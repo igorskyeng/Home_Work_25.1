@@ -12,7 +12,7 @@ class LessonSerializers(serializers.ModelSerializer):
 
 class CourseSerializers(serializers.ModelSerializer):
     number_of_lessons = serializers.SerializerMethodField()
-    lessons = LessonSerializers(source='lesson_set', many=True)
+    lessons = LessonSerializers(source='lesson_set', many=True, read_only=True)
 
     class Meta:
         model = Course
