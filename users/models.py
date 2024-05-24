@@ -18,6 +18,14 @@ class User(AbstractUser):
     username = USERNAME_FIELD
     REQUIRED_FIELDS = []
 
+    def __str__(self):
+        return str(self.email)
+
+    class Meta:
+        verbose_name = 'Пользователь'
+        verbose_name_plural = 'Пользователи'
+        ordering = ('id',)
+
 
 class Payments(models.Model):
 

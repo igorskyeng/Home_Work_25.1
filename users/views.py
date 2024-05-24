@@ -1,23 +1,42 @@
-import secrets
-
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import redirect
-from django.views.generic import CreateView, UpdateView,  TemplateView
-from django.urls import reverse_lazy, reverse
-from django.core.mail import send_mail
-from django.contrib.auth.views import LoginView
 from django_filters.rest_framework import DjangoFilterBackend
+
 from rest_framework.filters import OrderingFilter
-from rest_framework import viewsets, generics
+from rest_framework import generics
+from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 
 from users.models import User, Payments
 
-from config.settings import EMAIL_HOST_USER
-from users.serliazers import PaymentsSerializers
+from users.serliazers import PaymentsSerializers, UserSerializers
 
 
-class UserLoginView(LoginView):
-    pass
+class UserCreateAPIView(generics.CreateAPIView):
+    serializer_class = UserSerializers
+
+
+class UserListAPIView(generics.ListAPIView):
+    serializer_class = UserSerializers
+    queryset = User.objects.all()
+    permission_classes = [IsAuthenticated]
+
+
+class UserRetrieveAPIView(generics.RetrieveAPIView):
+    serializer_class = UserSerializers
+    queryset = User.objects.all()
+    permission_classes = [IsAuthenticated]
+
+
+class UserUpdateAPIView(generics.UpdateAPIView):
+    serializer_class = UserSerializers
+    queryset = User.objects.all()
+    permission_classes = [IsAuthenticated]
+
+
+class UserDestroyAPIView(generics.DestroyAPIView):
+    serializer_class = UserSerializers
+    queryset = User.objects.all()
+    permission_classes = [IsAuthenticated]
 
 
 class PaymentsCreateAPIView(generics.CreateAPIView):

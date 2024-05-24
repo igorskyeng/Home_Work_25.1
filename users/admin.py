@@ -1,6 +1,13 @@
 from django.contrib import admin
 from materials.models import Course, Lesson
-from users.models import Payments
+from users.models import Payments, User
+
+
+@admin.register(User)
+class UserAdmin(admin.ModelAdmin):
+    list_display = ('id', 'email', 'country', 'avatar', 'phone')
+    list_filter = ('email',)
+    search_fields = ('country', 'phone')
 
 
 @admin.register(Course)
