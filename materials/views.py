@@ -14,7 +14,6 @@ from rest_framework import viewsets, generics
 from rest_framework.permissions import IsAuthenticated
 
 from materials.models import Course, Lesson
-from materials.paginators import LessonPaginator
 from materials.permissions import IsModerator, IsOwner
 from materials.serliazers import CourseSerializers, LessonSerializers
 
@@ -61,7 +60,6 @@ class LessonCreateAPIView(generics.CreateAPIView):
 class LessonListAPIView(generics.ListAPIView):
     serializer_class = LessonSerializers
     permission_classes = [IsAuthenticated & (IsModerator | IsOwner)]
-    pagination_class = LessonPaginator
 
     def get_queryset(self):
         if not self.request.user.is_staff:
