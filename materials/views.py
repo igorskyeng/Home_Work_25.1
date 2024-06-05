@@ -73,17 +73,35 @@ class LessonListAPIView(generics.ListAPIView):
 
 class LessonRetrieveAPIView(generics.RetrieveAPIView):
     serializer_class = LessonSerializers
-    queryset = Lesson.objects.all()
     permission_classes = [IsAuthenticated & (IsModerator | IsOwner)]
+
+    def get_queryset(self):
+        if not self.request.user.is_staff:
+            return Course.objects.filter(owner=self.request.user)
+
+        elif self.request.user.is_staff:
+            return Course.objects.all()
 
 
 class LessonUpdateAPIView(generics.UpdateAPIView):
     serializer_class = LessonSerializers
-    queryset = Lesson.objects.all()
     permission_classes = [IsAuthenticated & (IsModerator | IsOwner)]
+
+    def get_queryset(self):
+        if not self.request.user.is_staff:
+            return Course.objects.filter(owner=self.request.user)
+
+        elif self.request.user.is_staff:
+            return Course.objects.all()
 
 
 class LessonDestroyAPIView(generics.DestroyAPIView):
     serializer_class = LessonSerializers
-    queryset = Lesson.objects.all()
     permission_classes = [IsAuthenticated & IsOwner]
+
+    def get_queryset(self):
+        if not self.request.user.is_staff:
+            return Course.objects.filter(owner=self.request.user)
+
+        elif self.request.user.is_staff:
+            return Course.objects.all()
